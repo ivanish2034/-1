@@ -71,7 +71,6 @@ public class GUI {
     public File getSelFile() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(frame);
-//        return (result == JFileChooser.APPROVE_OPTION) ? fileChooser.getSelectedFile() : null;
         if (result == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile();
         } else {
