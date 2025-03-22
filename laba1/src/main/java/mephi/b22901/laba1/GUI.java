@@ -10,7 +10,6 @@ package mephi.b22901.laba1;
  */
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 
@@ -22,11 +21,11 @@ public class GUI {
 
     public GUI(MainController controller) {
         frame = new JFrame("Статистический анализ");
-        frame.setSize(500, 350);
+        frame.setSize(600, 350);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        JPanel buttonPanel = new JPanel(new GridLayout(5, 1));
+        JPanel buttonPanel = new JPanel(new GridLayout(4, 2));
 
         importButton = new JButton("Импорт данных");
         calculateButton = new JButton("Рассчитать показатели");
@@ -34,16 +33,18 @@ public class GUI {
         exitButton = new JButton("Выход");
 
         importButton.addActionListener(e -> {
-            File file = getSelectedFile();
+            File file = getSelFile();
             int sheetNumber = getSheetNumber();
             controller.importData(file, sheetNumber);
         });
 
         calculateButton.addActionListener(e -> controller.calculateStatistics());
+        
         exportButton.addActionListener(e -> {
             File directory = getSelectedDirectory();
             controller.exportData(directory);
         });
+
         exitButton.addActionListener(e -> System.exit(0));
 
         JLabel sheetLabel = new JLabel("Номер листа:");
@@ -58,7 +59,7 @@ public class GUI {
 
         resultArea = new JTextArea();
         resultArea.setEditable(false);
-        resultArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        resultArea.setFont(new Font("SansSerif", Font.PLAIN, 12));
         JScrollPane scrollPane = new JScrollPane(resultArea);
 
         frame.add(buttonPanel, BorderLayout.WEST);
@@ -67,10 +68,15 @@ public class GUI {
         frame.setVisible(true);
     }
 
-    public File getSelectedFile() {
+    public File getSelFile() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(frame);
-        return (result == JFileChooser.APPROVE_OPTION) ? fileChooser.getSelectedFile() : null;
+//        return (result == JFileChooser.APPROVE_OPTION) ? fileChooser.getSelectedFile() : null;
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile();
+        } else {
+            return null;
+        }
     }
 
     public int getSheetNumber() {
@@ -93,6 +99,10 @@ public class GUI {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int result = chooser.showSaveDialog(frame);
-        return (result == JFileChooser.APPROVE_OPTION) ? chooser.getSelectedFile() : null;
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFile();
+        } else {
+            return null;
+        }
     }
 }

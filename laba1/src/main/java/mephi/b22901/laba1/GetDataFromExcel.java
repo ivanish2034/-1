@@ -18,14 +18,14 @@ import java.util.Iterator;
 
 public class GetDataFromExcel {
     public static double[][] readData(File file, int sheetNumber) {
-    ArrayList<double[]> dataList = new ArrayList<>();
+        ArrayList<double[]> dataList = new ArrayList<>();
 
-    try (FileInputStream fis = new FileInputStream(file);
-         Workbook workbook = new XSSFWorkbook(fis)) {
+        try (FileInputStream fis = new FileInputStream(file);
+            Workbook workbook = new XSSFWorkbook(fis)) {
 
-        if (sheetNumber >= workbook.getNumberOfSheets()) {
-            return null;  
-        }
+                if (sheetNumber >= workbook.getNumberOfSheets()) {
+                    return null;  
+                }
 
         Sheet sheet = workbook.getSheetAt(sheetNumber);
         Iterator<Row> rowIterator = sheet.iterator();

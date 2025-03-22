@@ -80,6 +80,4 @@ public class Calculator {
         return bounds;
     }
 
-
-
 }
