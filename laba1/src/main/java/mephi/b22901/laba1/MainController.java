@@ -14,14 +14,14 @@ import java.io.IOException;
 
 public class MainController {
     private GUI gui;
-    private Calculator calculator;
+//    private Calculator calculator;
     private double[][] dataset;
     private double[][] results;
     private double[][] covarianceMatrix;
 
-    public MainController() {
-        this.calculator = new Calculator();
-    }
+//    public MainController() {
+//        this.calculator = new Calculator();
+//    }
 
     public void start() {
         this.gui = new GUI(this);
@@ -50,33 +50,31 @@ public class MainController {
         }
     }
 
+
     public void calculateStatistics() {
-    if (dataset == null) {
+        if (dataset == null) {
         gui.showMessage("Ошибка: сначала импортируйте данные!");
         return;
     }
-
-    results = calculator.calculateAll(dataset);
-    covarianceMatrix = calculator.calculateCovariances(dataset);
-
-    StringBuilder resultText = new StringBuilder();
+    results = Calculator.calculateAll(dataset);
+    covarianceMatrix = Calculator.calculateCovariances(dataset);
+    String resultText = "";
     String[] headers = {"Среднее геом.", "Среднее арифм.", "Станд. отклонение", "Размах",
                         "Дисперсия", "Количество элементов", "Коэф. вариации", 
                         "Нижняя граница доверит. интервала", "Верхняя граница доверит. интервала",
                         "Максимум", "Минимум"};
 
     for (int i = 0; i < results.length; i++) {
-        resultText.append("Набор ").append(i + 1).append(":\n");
+        resultText += "Набор " + (i + 1) + ":\n";  // Конкатенация строк
         for (int j = 0; j < results[i].length; j++) {
-            resultText.append(headers[j]).append(": ")
-                      .append(String.format("%.4f", results[i][j])) 
-                      .append("\n");
+            resultText += headers[j] + ": " + String.format("%.4f", results[i][j]) + "\n";  // Конкатенация строк
         }
-        resultText.append("\n");
+        resultText += "\n";
     }
 
-    gui.displayResults(resultText.toString());
+    gui.displayResults(resultText);
 }
+
 
 public void exportData(File directory) {
     if (results == null || covarianceMatrix == null) {
@@ -86,7 +84,7 @@ public void exportData(File directory) {
 
     if (directory != null) {
         try {
-            new SaveDataInExcel(directory, results, covarianceMatrix);
+            SaveDataInExcel.SaveDataInExcel(directory, results, covarianceMatrix);
             gui.showMessage("Файл 'Ответы.xlsx' успешно сохранён в " + directory.getAbsolutePath());
         } catch (IOException e) {
             gui.showMessage("Ошибка при сохранении файла: " + e.getMessage());

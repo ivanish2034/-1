@@ -16,7 +16,7 @@ import java.io.IOException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class SaveDataInExcel {
-    public SaveDataInExcel(File directory, double[][] results, double[][] covarianceMatrix) throws IOException {
+    public static void SaveDataInExcel(File directory, double[][] results, double[][] covarianceMatrix) throws IOException {
 
         File file = new File(directory, "Ответы.xlsx");
         Workbook workbook;

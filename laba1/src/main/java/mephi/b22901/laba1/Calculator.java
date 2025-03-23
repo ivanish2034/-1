@@ -13,8 +13,8 @@ import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
 public class Calculator {
-    public double[][] calculateAll(double[][] data) {
-        int numRows = data.length;
+    public static double[][] calculateAll(double[][] data) {
+//        int numRows = data.length;
         int numCols = data[0].length;
         double[][] results = new double[numCols][11];
 
@@ -46,7 +46,7 @@ public class Calculator {
         return results;
     }
 
-    public double[][] calculateCovariances(double[][] data) {
+    public static double[][] calculateCovariances(double[][] data) {
         int numCols = data[0].length;
         double[][] covarianceMatrix = new double[numCols][numCols];
         Covariance cov = new Covariance();
@@ -59,7 +59,7 @@ public class Calculator {
         return covarianceMatrix;
     }
 
-    private double[] getColumn(double[][] data, int colIndex) {
+    private static double[] getColumn(double[][] data, int colIndex) {
         int numRows = data.length;
         double[] column = new double[numRows];
         for (int i = 0; i < numRows; i++) {
@@ -68,7 +68,7 @@ public class Calculator {
         return column;
     }
     
-    private double[] getConfidenceInterval(double mean, double stdDev, int n) {
+    private static double[] getConfidenceInterval(double mean, double stdDev, int n) {
         double alpha = 0.05;
         TDistribution tDist = new TDistribution(n - 1);
         double tValue = tDist.inverseCumulativeProbability(1 - alpha / 2);

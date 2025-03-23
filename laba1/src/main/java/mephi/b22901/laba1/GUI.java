@@ -98,6 +98,7 @@ public class GUI {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int result = chooser.showSaveDialog(frame);
+        
         if (result == JFileChooser.APPROVE_OPTION) {
             return chooser.getSelectedFile();
         } else {
