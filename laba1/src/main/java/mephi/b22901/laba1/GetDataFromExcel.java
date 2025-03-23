@@ -12,7 +12,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 
@@ -32,7 +31,9 @@ public class GetDataFromExcel {
             if (rowCount < 2) {
                 return new double[0][];
             }
-
+            
+            FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+            
             for (int rowIndex = 1; rowIndex < rowCount; rowIndex++) {
                 Row row = sheet.getRow(rowIndex);
                 if (row == null) continue;
@@ -42,8 +43,17 @@ public class GetDataFromExcel {
 
                 for (int colIndex = 0; colIndex < columnCount; colIndex++) {
                     Cell cell = row.getCell(colIndex, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
-                    if (cell != null && cell.getCellType() == CellType.NUMERIC) {
-                        values[colIndex] = cell.getNumericCellValue();
+                    if (cell != null) {
+                        switch (cell.getCellType()) {
+                            case NUMERIC:
+                                values[colIndex] = cell.getNumericCellValue();
+                                break;
+                            case FORMULA:
+                                values[colIndex] = evaluator.evaluate(cell).getNumberValue();
+                                break;
+                            default:
+                                values[colIndex] = Double.NaN; // Пропускаем текст и пустые ячейки
+                        }
                     } else {
                         values[colIndex] = Double.NaN;
                     }
@@ -59,4 +69,3 @@ public class GetDataFromExcel {
 
     }
 }
-

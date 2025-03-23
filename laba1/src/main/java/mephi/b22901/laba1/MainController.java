@@ -10,8 +10,6 @@ package mephi.b22901.laba1;
  */
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import javax.swing.JFileChooser;
 
 
 public class MainController {
@@ -49,7 +47,6 @@ public class MainController {
             gui.showMessage("Файл успешно загружен!");
         } catch (Exception e) {
             gui.showMessage("Ошибка при загрузке файла: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

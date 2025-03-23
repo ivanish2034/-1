@@ -17,9 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class SaveDataInExcel {
     public SaveDataInExcel(File directory, double[][] results, double[][] covarianceMatrix) throws IOException {
-        if (!directory.isDirectory()) {
-            throw new IllegalArgumentException("Выбран не каталог!");
-        }
 
         File file = new File(directory, "Ответы.xlsx");
         Workbook workbook;
@@ -56,13 +53,12 @@ public class SaveDataInExcel {
             }
         }
 
-        int startRow = results.length + 6;
-
-        Row titleRow = sheetResults.createRow(startRow - 1);
+        int kovRow = results.length + 6;
+        Row titleRow = sheetResults.createRow(kovRow - 1);
         titleRow.createCell(0).setCellValue("Ковариационная матрица:");
 
         for (int i = 0; i < covarianceMatrix.length; i++) {
-            Row row = sheetResults.createRow(startRow + i);
+            Row row = sheetResults.createRow(kovRow + i);
             for (int j = 0; j < covarianceMatrix[i].length; j++) {
                 row.createCell(j).setCellValue(covarianceMatrix[i][j]); // Без String.format
             }
