@@ -14,7 +14,6 @@ import org.apache.commons.math3.stat.correlation.Covariance;
 
 public class Calculator {
     public static double[][] calculateAll(double[][] data) {
-//        int numRows = data.length;
         int numCols = data[0].length;
         double[][] results = new double[numCols][11];
 

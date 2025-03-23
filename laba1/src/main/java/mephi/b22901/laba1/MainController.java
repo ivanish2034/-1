@@ -14,19 +14,32 @@ import java.io.IOException;
 
 public class MainController {
     private GUI gui;
-//    private Calculator calculator;
     private double[][] dataset;
     private double[][] results;
     private double[][] covarianceMatrix;
 
-//    public MainController() {
-//        this.calculator = new Calculator();
-//    }
-
     public void start() {
-        this.gui = new GUI(this);
+        this.gui = new GUI();
+        movies();
     }
+    
+    private void movies() {
+        gui.setImButLis(e -> {
+            File file = gui.getSelFile();
+            int sheetNumber = gui.getSheetNumber();
+            importData(file, sheetNumber);
+        });
 
+        gui.setCalButLis(e -> calculateStatistics());
+
+        gui.setExportButLis(e -> {
+            File directory = gui.getSelectedDirectory();
+            exportData(directory);
+        });
+
+        gui.setExitButLis(e -> System.exit(0));
+    }
+    
     public void importData(File file, int sheetNumber) {
         if (file == null || !file.exists()) {
             gui.showMessage("Ошибка: файл не найден!");
@@ -55,42 +68,42 @@ public class MainController {
         if (dataset == null) {
         gui.showMessage("Ошибка: сначала импортируйте данные!");
         return;
-    }
-    results = Calculator.calculateAll(dataset);
-    covarianceMatrix = Calculator.calculateCovariances(dataset);
-    String resultText = "";
-    String[] headers = {"Среднее геом.", "Среднее арифм.", "Станд. отклонение", "Размах",
-                        "Дисперсия", "Количество элементов", "Коэф. вариации", 
-                        "Нижняя граница доверит. интервала", "Верхняя граница доверит. интервала",
-                        "Максимум", "Минимум"};
-
-    for (int i = 0; i < results.length; i++) {
-        resultText += "Набор " + (i + 1) + ":\n";  // Конкатенация строк
-        for (int j = 0; j < results[i].length; j++) {
-            resultText += headers[j] + ": " + String.format("%.4f", results[i][j]) + "\n";  // Конкатенация строк
         }
-        resultText += "\n";
-    }
+        results = Calculator.calculateAll(dataset);
+        covarianceMatrix = Calculator.calculateCovariances(dataset);
+        String resultText = "";
+        String[] headers = {"Среднее геом.", "Среднее арифм.", "Станд. отклонение", "Размах",
+                            "Дисперсия", "Количество элементов", "Коэф. вариации", 
+                            "Нижняя граница доверит. интервала", "Верхняя граница доверит. интервала",
+                            "Максимум", "Минимум"};
 
-    gui.displayResults(resultText);
-}
-
-
-public void exportData(File directory) {
-    if (results == null || covarianceMatrix == null) {
-        gui.showMessage("Ошибка: сначала рассчитайте статистику!");
-        return;
-    }
-
-    if (directory != null) {
-        try {
-            SaveDataInExcel.SaveDataInExcel(directory, results, covarianceMatrix);
-            gui.showMessage("Файл 'Ответы.xlsx' успешно сохранён в " + directory.getAbsolutePath());
-        } catch (IOException e) {
-            gui.showMessage("Ошибка при сохранении файла: " + e.getMessage());
+        for (int i = 0; i < results.length; i++) {
+            resultText += "Набор " + (i + 1) + ":\n";  // Конкатенация строк
+            for (int j = 0; j < results[i].length; j++) {
+                resultText += headers[j] + ": " + String.format("%.4f", results[i][j]) + "\n";  // Конкатенация строк
+            }
+            resultText += "\n";
         }
-    } else {
-        gui.showMessage("Выбор папки отменён.");
+
+        gui.displayResults(resultText);
     }
-}
+
+
+    public void exportData(File directory) {
+        if (results == null || covarianceMatrix == null) {
+            gui.showMessage("Ошибка: сначала рассчитайте статистику!");
+            return;
+        }
+
+        if (directory != null) {
+            try {
+                SaveDataInExcel.SaveDataInExcel(directory, results, covarianceMatrix);
+                gui.showMessage("Файл 'Ответы.xlsx' успешно сохранён в " + directory.getAbsolutePath());
+            } catch (IOException e) {
+                gui.showMessage("Ошибка при сохранении файла: " + e.getMessage());
+            }
+        } else {
+            gui.showMessage("Выбор папки отменён.");
+        }
+    }
 }

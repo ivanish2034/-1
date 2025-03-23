@@ -10,6 +10,7 @@ package mephi.b22901.laba1;
  */
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 
@@ -19,7 +20,7 @@ public class GUI {
     private JTextArea resultArea;
     private JTextField sheetNumberField;
 
-    public GUI(MainController controller) {
+    public GUI() {
         frame = new JFrame("Статистический анализ");
         frame.setSize(600, 350);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,21 +32,6 @@ public class GUI {
         calculateButton = new JButton("Рассчитать показатели");
         exportButton = new JButton("Экспорт результатов");
         exitButton = new JButton("Выход");
-
-        importButton.addActionListener(e -> {
-            File file = getSelFile();
-            int sheetNumber = getSheetNumber();
-            controller.importData(file, sheetNumber);
-        });
-
-        calculateButton.addActionListener(e -> controller.calculateStatistics());
-        
-        exportButton.addActionListener(e -> {
-            File directory = getSelectedDirectory();
-            controller.exportData(directory);
-        });
-
-        exitButton.addActionListener(e -> System.exit(0));
 
         JLabel sheetLabel = new JLabel("Номер листа:");
         sheetNumberField = new JTextField("0");
@@ -104,5 +90,21 @@ public class GUI {
         } else {
             return null;
         }
+    }
+    
+    public void setImButLis(ActionListener listener) {
+        importButton.addActionListener(listener);
+    }
+
+    public void setCalButLis(ActionListener listener) {
+        calculateButton.addActionListener(listener);
+    }
+
+    public void setExportButLis(ActionListener listener) {
+        exportButton.addActionListener(listener);
+    }
+
+    public void setExitButLis(ActionListener listener) {
+        exitButton.addActionListener(listener);
     }
 }
