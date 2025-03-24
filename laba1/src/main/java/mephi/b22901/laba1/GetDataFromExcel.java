@@ -52,7 +52,7 @@ public class GetDataFromExcel {
                                 values[colIndex] = evaluator.evaluate(cell).getNumberValue();
                                 break;
                             default:
-                                values[colIndex] = Double.NaN; // Пропускаем текст и пустые ячейки
+                                values[colIndex] = Double.NaN;
                         }
                     } else {
                         values[colIndex] = Double.NaN;
